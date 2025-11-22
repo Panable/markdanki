@@ -1,0 +1,56 @@
+{{Front}}
+
+<script>
+(function () {
+    function loadCSS(href, fallback) {
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = href;
+        link.onerror = function () {
+            if (fallback) {
+                var fallbackLink = document.createElement('link');
+                fallbackLink.rel = 'stylesheet';
+                fallbackLink.href = fallback;
+                document.head.appendChild(fallbackLink);
+            }
+        };
+        document.head.appendChild(link);
+    }
+
+    function loadJS(src, fallback, onloadCb) {
+        if (!document.querySelector('script[src="' + src + '"]')) {
+            var script = document.createElement('script');
+            script.type = 'text/javascript'; // NOT module
+            script.src = src;
+            script.onload = function () {
+                if (onloadCb) onloadCb();
+            };
+            script.onerror = function () {
+                if (fallback && !document.querySelector('script[src="' + fallback + '"]')) {
+                    var fallbackScript = document.createElement('script');
+                    fallbackScript.type = 'text/javascript';
+                    fallbackScript.src = fallback;
+                    fallbackScript.onload = function () {
+                        if (onloadCb) onloadCb();
+                    };
+                    document.head.appendChild(fallbackScript);
+                }
+            };
+            document.head.appendChild(script);
+        }
+    }
+
+    var jsLocal = 'highlight.min.js'; // name in your media folder
+    var jsCDN   = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js';
+
+    var cssLocal = 'hljs.css'; // name in your media folder
+    var cssCDN   = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css';
+
+    loadCSS(cssLocal, cssCDN);
+    loadJS(jsLocal, jsCDN, function () {
+				hljs.highlightAll();
+    });
+})();
+</script>
+
+<script>hljs.highlightAll();</script>
