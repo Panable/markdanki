@@ -1,3 +1,15 @@
+# Markdanki 🚬
+Markdanki is a command-line tool that allows updating of Anki decks from a markdown file by leveraging [anki-connect](https://git.sr.ht/~foosoft/anki-connect).
+
+### Usage
+Requires zig version 0.16.0
+
+```sh
+cd src
+zig run main.zig
+```
+
+### Purpose
 I've started taking notes as a series of questions and answers - and I would love to be able to insert these into Anki. I write these notes in markdown, they often contain code blocks, and the act of manually inserting these into Anki is very painstaking. I would love a way to just write out some notes like this and have it inserted into Anki:
 
 ````md
