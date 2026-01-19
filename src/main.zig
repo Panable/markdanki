@@ -78,22 +78,22 @@ const ParseErrors = error{
 
 pub fn main() !void {
     // Initiate allocator
-    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-    defer _ = gpa.deinit();
-    const alloc = gpa.allocator();
+    
+    var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
+    defer arena.deinit();
+    const alloc = arena.allocator();
 
     const filename = "test.md";
 
     const cwd = std.fs.cwd();
     const fileContents: []u8 = try cwd.readFileAlloc(filename, alloc, std.Io.Limit.limited(4096));
-    defer alloc.free(fileContents);
 
     var it = std.mem.splitSequence(u8, fileContents, "\n");
 
     var state: State = .none;
 
     var deck: Deck = try .init(alloc, filename);
-    defer deck.deinit();
+    // defer deck.deinit();
 
     var current: Card = .init(alloc);
 
